@@ -41,6 +41,11 @@ def cost(weight, bias, x_values, y_values):
     return total
 
 
+def compute_gradient(weight, bias, x, y):
+    '''Return the computed gradient'''
+    return (y_hat(weight, bias, x) - y) * x
+
+
 
 
 
