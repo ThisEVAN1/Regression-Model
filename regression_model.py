@@ -8,7 +8,7 @@ ALPHA = 1
 def main():
     x_values, y_values = read_file(FILE)
     for i in range(len(x_values)):
-        pass
+        print(cost(1, 0, x_values, y_values))
 
 
 def read_file(file=FILE):
@@ -19,14 +19,30 @@ def read_file(file=FILE):
         data = csv.reader(f)
         header = next(data)
         for row in data:
-            x_values.append(row[0])
-            y_values.append(row[1])
+            x_values.append(float(row[0]))
+            y_values.append(float(row[1]))
     return x_values, y_values
 
 
 def y_hat(weight, bias, x):
     '''Give the predicted y values'''
     return weight * x + bias
+
+
+def cost(weight, bias, x_values, y_values):
+    '''Find the cost of error'''
+    total = 0
+
+    for x, y in zip(x_values, y_values):
+        total += (y_hat(weight, bias, x) - y) ** 2
+
+    total /= 2 * len(x_values)
+
+    return total
+
+
+
+
 
 
 if __name__ == '__main__':
