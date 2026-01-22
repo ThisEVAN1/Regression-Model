@@ -1,7 +1,7 @@
 import csv
 
 
-FILE = 'scores_data.csv'
+FILE = 'test.csv'
 ALPHA = 0.00025
 
 
@@ -47,31 +47,24 @@ def cost(weight, bias, x_values, y_values):
     return total
 
 
-def compute_gradient(weight, bias, x_values, y_values, parameter, total):
+def compute_gradient(weight, bias, x_values, y_values, total):
     '''Return the computed gradient'''
     w = 0
     b = 0
     for x, y in zip(x_values, y_values):
-        if parameter == 'weight':
-            w += (y_hat(weight, bias, x) - y) * x
-        elif parameter == 'bias':
-            b += (y_hat(weight, bias, x) - y)
-        else:
-            raise ValueError('Invalid parameter')
-        
-    if parameter == 'weight':
-        return w / total
-    else:
-        return b / total
+        w += (y_hat(weight, bias, x) - y) * x
+        b += (y_hat(weight, bias, x) - y)
+    return w / total, b / total
 
 
 def gradient_descent(weight, bias, x_values, y_values, alpha=ALPHA):
     total_values = len(x_values)
     w = weight
     b = bias
+    gradient = list(map(lambda x: x * alpha, compute_gradient(weight, bias, x_values, y_values, total_values)))
 
-    w -= alpha * compute_gradient(weight, bias, x_values, y_values, 'weight', total_values)
-    b -= alpha * compute_gradient(weight, bias, x_values, y_values, 'bias', total_values)
+    w -= gradient[0]
+    b -= gradient[1]
     return w, b
 
 
