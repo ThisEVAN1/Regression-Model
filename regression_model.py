@@ -3,7 +3,7 @@ import numpy as np
 import time
 
 
-FILE = 'test.csv'
+FILE = "test.csv"
 ALPHA = 0.00025
 
 
@@ -19,14 +19,13 @@ def main():
             print(weight, bias)
     time_end = time.time()
     print(f"Time: {1000*(time_end - time_start):.4f} ms ")
-    
 
 
 def read_file(file=FILE):
-    '''Returns the x and y values'''
+    """Returns the x and y values"""
     x_values = []
     y_values = []
-    with open(file, newline='') as f:
+    with open(file, newline="") as f:
         data = csv.reader(f)
         header = next(data)
         for row in data:
@@ -36,12 +35,12 @@ def read_file(file=FILE):
 
 
 def y_hat(weight, bias, x):
-    '''Give the predicted y values'''
+    """Give the predicted y values"""
     return weight * x + bias
 
 
 def cost(weight, bias, x_values, y_values):
-    '''Find the cost of error'''
+    """Find the cost of error"""
     length = x_values.shape[0]
     total = 0
 
@@ -55,12 +54,12 @@ def cost(weight, bias, x_values, y_values):
 
 
 def compute_gradient(weight, bias, x_values, y_values, total):
-    '''Return the computed gradient'''
+    """Return the computed gradient"""
     w = 0
     b = 0
     for x, y in zip(x_values, y_values):
         w += (y_hat(weight, bias, x) - y) * x
-        b += (y_hat(weight, bias, x) - y)
+        b += y_hat(weight, bias, x) - y
     return w / total, b / total
 
 
@@ -68,12 +67,17 @@ def gradient_descent(weight, bias, x_values, y_values, alpha=ALPHA):
     total_values = len(x_values)
     w = weight
     b = bias
-    gradient = list(map(lambda x: x * alpha, compute_gradient(weight, bias, x_values, y_values, total_values)))
+    gradient = list(
+        map(
+            lambda x: x * alpha,
+            compute_gradient(weight, bias, x_values, y_values, total_values),
+        )
+    )
 
     w -= gradient[0]
     b -= gradient[1]
     return w, b
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()
