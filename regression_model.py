@@ -1,4 +1,6 @@
 import csv
+import numpy as np
+import time
 
 
 FILE = 'test.csv'
@@ -6,6 +8,7 @@ ALPHA = 0.00025
 
 
 def main():
+    time_start = time.time()
     x_values, y_values = read_file(FILE)
     weight = 0
     bias = 0
@@ -14,6 +17,8 @@ def main():
         if i % 100000 == 0:
             print(i, cost(weight, bias, x_values, y_values))
             print(weight, bias)
+    time_end = time.time()
+    print(f"Time: {1000*(time_end - time_start):.4f} ms ")
     
 
 
@@ -27,7 +32,7 @@ def read_file(file=FILE):
         for row in data:
             x_values.append(float(row[0]))
             y_values.append(float(row[1]))
-    return x_values, y_values
+    return np.array(x_values), np.array(y_values)
 
 
 def y_hat(weight, bias, x):
@@ -37,12 +42,14 @@ def y_hat(weight, bias, x):
 
 def cost(weight, bias, x_values, y_values):
     '''Find the cost of error'''
+    length = x_values.shape[0]
     total = 0
 
-    for x, y in zip(x_values, y_values):
-        total += (y_hat(weight, bias, x) - y) ** 2
+    for i in range(length):
+        val = np.dot(x_values[i], weight) + bias
+        total += (val - y_values[i]) ** 2
 
-    total /= 2 * len(x_values)
+    total /= 2 * length
 
     return total
 
