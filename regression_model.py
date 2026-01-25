@@ -1,9 +1,10 @@
 import csv
 import numpy as np
 import time
+import sys
 
 
-FILE = "test.csv"
+FILE = sys.argv[1]
 ALPHA = 0.00025
 
 
@@ -64,7 +65,7 @@ def compute_gradient(weight, bias, x_values, y_values, total):
 
 
 def gradient_descent(weight, bias, x_values, y_values, alpha=ALPHA):
-    total_values = len(x_values)
+    total_values = x_values.shape[0]
     w = weight
     b = bias
     gradient = list(
