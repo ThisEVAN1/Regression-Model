@@ -4,13 +4,14 @@ import sys
 
 
 FILE = sys.argv[1]
-ALPHA = 0.00025
-ITERATIONS = 100000
+ALPHA = 1
+ITERATIONS = 10000
 
 
 def main():
     time_start = time.time()
     X, y = read_file(FILE)
+    μ, σ = normalize(X)
 
     m, n = X.shape
     w = np.zeros(n)
@@ -18,9 +19,12 @@ def main():
     
     for i in range(ITERATIONS):
         w, b = gradient_descent(w, b, X, y, ALPHA)
-        if i % 10000 == 0:
+        if i % 1000 == 0:
+            w_true = w / σ
+            b_true = b - np.sum((w * μ) / σ)
+
             print(i, find_cost(w, b, X, y))
-            print(w, b)
+            print(w_true, b_true)
     time_end = time.time()
     print(f"Time: {1000*(time_end - time_start):.4f} ms ")
 
@@ -28,10 +32,22 @@ def main():
 def read_file(file=FILE):
     """Returns the x and y values"""
     data = np.loadtxt(file, delimiter=',', skiprows=1)
+
     X = data[:, :-1] # A 2d array of all values besides the last
     y = data[:, -1] # A 1d array of the last values
-    
+
     return X, y
+
+
+def normalize(X):
+    '''Normalize data using z-score normalization'''
+    μ = X.mean(axis=0)
+    σ = X.std(axis=0)
+
+    X -= μ 
+    X /= σ
+
+    return μ, σ
 
 
 def y_hat(w, b, X):
