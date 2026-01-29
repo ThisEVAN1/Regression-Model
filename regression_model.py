@@ -19,12 +19,22 @@ def main():
     
     for i in range(ITERATIONS):
         w, b = gradient_descent(w, b, X, y, ALPHA)
-        if i % 1000 == 0:
+
+        # Print the iteration, cost, weight, and bias 10 times
+        if i % (ITERATIONS / 10) == 0:
             w_true = w / σ
             b_true = b - np.sum((w * μ) / σ)
 
-            print(i, find_cost(w, b, X, y))
-            print(w_true, b_true)
+            print(f'Iteration: {i} Cost: {find_cost(w, b, X, y)}')
+            print(f'Weights: {w_true} Bias: {b_true}')
+
+    # Print the final results
+    w_true = w / σ
+    b_true = b - np.sum((w * μ) / σ)
+    print('\n\tFINAL RESULT\t\n')
+    print(f'Weights: {w_true} Bias: {b_true}')
+    print(f'Iteration: {ITERATIONS} Cost: {find_cost(w, b, X, y)}')
+
     time_end = time.time()
     print(f"Time: {1000*(time_end - time_start):.4f} ms ")
 
